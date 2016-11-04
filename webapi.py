@@ -34,10 +34,10 @@ output[:20]
 ALLOWED_ORIGINS = ['http://127.0.0.1:8080']
 
 class CorsMiddleware(object):
-    def process_request(self, request, response):
-        origin = request.get_header('Origin')
-        if origin in ALLOWED_ORIGINS:
-            response.set_header('Access-Control-Allow-Origin', origin)
+	def process_request(self, request, response):
+		origin = request.get_header('Origin')
+		if origin in ALLOWED_ORIGINS:
+			response.set_header('Access-Control-Allow-Origin', origin)
 
 class NumPyArangeEncoder(json.JSONEncoder):
 	def default(self, obj):
