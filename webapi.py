@@ -6,6 +6,7 @@ import string, codecs
 import MeCab
 import json
 import falcon
+from sklearn import svm
 
 # reload(sys)
 # sys.stdout = codecs.getwriter('utf_8')(sys.stdout)
@@ -13,6 +14,9 @@ import falcon
 
 # モデル読み込み
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+# SVM 準備
+clf = svm.SVC()
 
 model = gensim.models.word2vec.Word2Vec.load("jpw-wakati-model-utf8")
 print "model load compl_ete"
