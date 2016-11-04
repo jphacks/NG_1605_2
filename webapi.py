@@ -31,11 +31,12 @@ for item in s([u'販売', input], [u'単位']):
 output[:20]
 
 # クロスオリジンを許可
-ALLOWED_ORIGINS = ['http://127.0.0.1:8080']
+ALLOWED_ORIGINS = ['http://192.168.11.2', 'http://192.168.0.6']
 
 class CorsMiddleware(object):
 	def process_request(self, request, response):
 		origin = request.get_header('Origin')
+		print ALLOWED_ORIGINS
 		if origin in ALLOWED_ORIGINS:
 			response.set_header('Access-Control-Allow-Origin', origin)
 
@@ -75,5 +76,5 @@ app.add_route("/word2vec", word2vec())
 if __name__ == "__main__":
 	from wsgiref import simple_server
 	# サーバ起動
-	httpd = simple_server.make_server("127.0.0.1", 8000, app)
+	httpd = simple_server.make_server("192.168.11.4", 8000, app)
 	httpd.serve_forever()
