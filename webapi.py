@@ -7,6 +7,7 @@ import MeCab
 import json
 import falcon
 from sklearn import svm
+from suggest import suggest
 
 # reload(sys)
 # sys.stdout = codecs.getwriter('utf_8')(sys.stdout)
@@ -15,24 +16,8 @@ from sklearn import svm
 # モデル読み込み
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-# SVM 準備
-clf = svm.SVC()
-
 model = gensim.models.word2vec.Word2Vec.load("jpw-wakati-model-utf8")
 print "model load compl_ete"
-
-def s(pos, nag, topn=200):
-	return model.most_similar(positive=pos, negative=nag, topn=topn)
-
-input = u'日本酒'
-output = []
-
-for item in s([u'販売', input], [u'単位']):
-	if model.similarity(input, item[0]) < 0.5 :
-		# 単語の連結率も算出する必要がある.
-		# 単語の連結率が高いものは、珍しさがないので、推薦を行わない
-		output.append((item[0], model.similarity(input, item[0])))
-output[:20]
 
 # クロスオリジンを許可
 ALLOWED_ORIGINS = ['http://192.168.11.2', 'http://192.168.0.6']
@@ -59,14 +44,8 @@ class word2vec(object):
 			print "param an error"
 			resp.body = json.dumps(u'word error')
 			return
-		
-		output = []
-		try:
-			for item in s([u'販売', param], [u'単位']):
-				if model.similarity(param, item[0]) < 0.5 :
-					output.append((item[0], model.similarity(param, item[0])))
-		except KeyError:
-			print "KeyError"
+		# 推薦単語を取得
+		output = suggest(model, param)
 		# クロスオリジンを許可
 		resp.set_header('Access-Control-Allow-Origin', '*')
 		# リクエスト挿入
