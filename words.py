@@ -1,11 +1,5 @@
-#!/home/foo/yourpythonenv/local/bin/python -S
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import sys
-sys.setdefaultencoding('UTF-8')
-sys.path.append("/home/foo/yourpythonenv")
-import site
-
 # 頑張って集めた面白げな単語対
 words = [
     [u'単位', u'販売'],
